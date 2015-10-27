@@ -116,13 +116,21 @@
   
     
     
-    $.fn.transition = function(param){
+    $.fn.transition = function(param, ha){
+        
+        if(ha===true){
+            // --
+            $(this).css({transition: param, transform:'translate3d(0,0,0)'});
+            return this;
+        }
+        
+        
         $(this).css({transition: param});
         return this;
     }
     $.fn.to = function(param){
         var $dfrd = $.Deferred();
-        $(this).css(param).one('bsTransitionEnd', function(){
+        $(this).css(param).on('bsTransitionEnd', function(){console.log('found you!')
             $dfrd.resolve();
         });
         return $dfrd;
@@ -135,14 +143,8 @@
 
     
 $(function(){
-
     
-    $('#cube').transition('all 450ms linear').to({width:'400px'}).done(function(){ console.log('adsdasdasd') });
-    
-    
-    
-    
-    
+    $('#cube').transition('width 450ms linear, height 2000ms linear', true).to({width:'400px', height:'250px'}).done(function(){ console.log('Transition\'s done...') });
     
 });
 </script>      
