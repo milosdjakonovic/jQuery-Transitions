@@ -5,16 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap 101 Template</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-      
-      
       
       
 <style>
@@ -22,11 +13,18 @@
         width: 100%;
         height: 100%;
         margin: 0;
+        padding: 0;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        line-height: 1.428571429;
+        -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
+                box-sizing: border-box;
     }
     body{
         background-color: #144836;
     }
     #cube{
+        padding: 2px;
         position: absolute;
         width: 200px;
         height: 200px;
@@ -35,7 +33,17 @@
         left: 50%;
         margin-top: -100px;
         margin-left: -100px;
+        -webkit-transform: rotate(5deg);
+        -moz-transform: rotate(5deg);
         transform: rotate(5deg);
+        
+        -webkit-perspective: 400px;
+        perspective: 400px;
+        
+        
+        transform-origin: 50% 0%;
+        
+        
     }
     
     
@@ -50,8 +58,8 @@
       
       
       <div id="cube">
-          <p>tekst1</p>
-          <p>tekst2</p>
+          <p>Lorem</p>
+          <p>Ipsum</p>
       </div>
       
       
@@ -69,29 +77,29 @@
 <script>
 (function($){
     
-  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
-  // ============================================================
-
+  // www.modernizr.com
+    
     function transitionEnd() {
-    var el = document.createElement('bootstrap');
+        var el = document.createElement('bootstrap');
 
-    var transEndEventNames = {
-      WebkitTransition : 'webkitTransitionEnd',
-      MozTransition    : 'transitionend',
-      OTransition      : 'oTransitionEnd otransitionend',
-      transition       : 'transitionend'
-    }
+        var transEndEventNames = {
+          WebkitTransition : 'webkitTransitionEnd',
+          MozTransition    : 'transitionend',
+          OTransition      : 'oTransitionEnd otransitionend',
+          transition       : 'transitionend'
+        }
 
-    for (var name in transEndEventNames) {
-      if (el.style[name] !== undefined) {
-        return { end: transEndEventNames[name] }
-      }
-    }
+        for (var name in transEndEventNames) {
+          if (el.style[name] !== undefined) {
+            return { end: transEndEventNames[name] }
+          }
+        }
 
-    return false; // explicit for ie8 (  ._.)
+        return false; // no transitions supported
     }
 
     // http://blog.alexmaccaw.com/css-transitions
+    // what's good enough for tw bootstrap is good enough for me
     $.fn.emulateTransitionEnd = function (duration) {
         var called = false;
         var $el = this;
@@ -113,28 +121,33 @@
       }
     }    
   
-  
     
-    
-    $.fn.transition = function(param, ha){
-        
-        if(ha===true){
-            // --
-            $(this).css({transition: param, transform:'translate3d(0,0,0)'});
-            return this;
+    $.fn.transition = function(props, callback){
+        var transitionStr = '',
+        i=0,
+        // transition to properties    
+        trToProps = {};
+        for(var prop in props){
+            if(typeof(props[prop][2])==='undefined')
+                var ease = 'ease';
+            else var ease = props[prop][2];
+            transitionStr += prop + ' ' + props[prop][1] + 'ms ' + ease + ', ';
+            trToProps[prop] = props[prop][0];
+            i++;
         }
-        
-        
-        $(this).css({transition: param});
-        return this;
-    }
-    $.fn.to = function(param){
-        var $dfrd = $.Deferred();
-        $(this).css(param).on('bsTransitionEnd', function(){console.log('found you!')
-            $dfrd.resolve();
+        //finally set transition property
+        $(this).css('transition', transitionStr.slice(0, - 2))
+        .css(trToProps).on('bsTransitionEnd', function(){
+            if(--i === 0){
+                //only calling transitionend for ONE property - the one with longest duration
+                if(callback)
+                callback.call();
+            }
         });
-        return $dfrd;
+        return this;
     }    
+    
+   
     
     
   
@@ -144,7 +157,58 @@
     
 $(function(){
     
-    $('#cube').transition('width 450ms linear, height 2000ms linear', true).to({width:'400px', height:'250px'}).done(function(){ console.log('Transition\'s done...') });
+    /*============TESTS================*/
+    
+    
+//    $('#cube').transition({
+//        width:  [ '400px', 450, 'linear'],
+//        height: ['250px', 2000],
+//        transform:['translate3d(100px,-200px,0)', 500]
+//    }, function(tredProp){
+//        console.log('ok')
+//    }); //-- ok
+    
+    
+//    $('#cube').transition({
+//        width:  [ '400px', 450, 'linear']
+//    }, function(tredProp){
+//        console.log('ok')
+//    }); //-- ok
+    
+
+//    $('#cube').transition({
+//        width:  [ '400px', 450, 'linear'],
+//        height: ['250px', 2000],
+//        transform:['translate3d(100px,-200px,0)', 500]
+//    }, function(){
+//        $('#cube').transition({
+//            width:  ['200px', 400],
+//            height: ['200px',400],
+//            transform:['translate3d(-200px,200px,0) rotate(180deg) rotateY(40deg)', 500]
+//        })
+//    }); //-- ok 
+    
+//    var $cube = $('#cube');
+//    
+//    
+//    function spinn(){
+//        
+//        var val = $cube.data('rot') || 180;
+//
+//        $cube.transition({
+//            transform: ['translate3d(0,0,0) rotate(' + val + 'deg)', 500, 'linear'  ]
+//        }, function(){
+//            
+//            $cube.data('rot', (val + 180));
+//            spinn();
+//        });
+//        
+//        
+//    }
+//
+//    spinn(); // -- ok
+    
+    
     
 });
 </script>      
