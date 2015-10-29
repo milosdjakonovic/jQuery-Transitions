@@ -54,38 +54,66 @@
     };    
     
     
-  
-    $.tansition_fn_data = {};// node: 
-    /*
-        $.fn_tansition_data_ = {
-            node: node,
-            
-            
-        };
-    */
     
     $.fn.transition = function(props, callback){
-        var transitionStr = '',
-        i=0,
-        // transition to properties    
-        trToProps = {};
-        for(var prop in props){
-            if(typeof(props[prop][2])==='undefined')
-                var ease = 'ease';
-            else var ease = props[prop][2];
-            transitionStr += prop + ' ' + props[prop][1] + 'ms ' + ease + ', ';
-            trToProps[prop] = props[prop][0];
-            i++;
+        var self = this,
+        back = function(){
+            $.each($(self).data('tansition_fn_data'), function(a,b){
+                $(self).css(a,b);
+            })
+        },
+        pause = function(){
+            
+        }, 
+        resume = function(){
+            
+        },
+        finish = function(){
+            
         }
-        //finally set transition property
-        $(this).css('transition', transitionStr.slice(0, - 2))
-        .css(trToProps).on('bsTransitionEnd', function(){
-            if(--i === 0){
-                //only calling transitionend for ONE property - the one with longest duration
-                if(callback)
-                callback.call();
+        
+        
+        if(typeof(props)==='string'){
+            //we have command here, not props input
+            (props==='back')    && back();
+            (props==='pause')   && pause();
+            (props==='resume')  && resume();
+            (props==='finish')  && finish();
+            
+        } else {
+
+            var transitionStr = '',
+            i=0,
+            // transition to properties    
+            trToProps = {};
+            for(var prop in props){
+                if(typeof(props[prop][2])==='undefined')
+                    var ease = 'ease';
+                else var ease = props[prop][2];
+                transitionStr += prop + ' ' + props[prop][1] + 'ms ' + ease + ', ';
+                trToProps[prop] = props[prop][0];
+                i++;
+                //save state for back function
+                (typeof($(this).data('tansition_fn_data'))!=='object') && $(this).data('tansition_fn_data', {});
+
+                $(this).data('tansition_fn_data')[prop] = $(this).css(prop);
+
             }
-        });
+
+
+            //finally set transition property
+            $(this).css('transition', transitionStr.slice(0, - 2))
+            .css(trToProps).on('bsTransitionEnd', function(){
+                if(--i === 0){
+                    //only calling transitionend for ONE property - the one with longest duration
+                    if(callback)
+                    callback.call();
+                }
+            });            
+        }
+        
+        
+
         return this;
     }    
     
