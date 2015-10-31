@@ -1,6 +1,6 @@
 (function($){
     
-  // www.modernizr.com
+  // function transitionEnd from www.modernizr.com
     
     function transitionEnd() {
         var el = document.createElement('bootstrap');
@@ -63,13 +63,24 @@
             })
         },
         pause = function(){
-            
+            console.log('pause executed');
+            var computedStyle = window.getComputedStyle(self[0], null);
+            for(var property in self.data('tansition_fn_data')){
+                self.css(property, computedStyle[property]).css('transition-duration', '0ms' );
+            }
         }, 
         resume = function(){
             
         },
         finish = function(){
             
+        },
+        sequence = function(){
+            
+        },
+            
+        composeCubicBezier = function(param){
+            return ['cubic-bezier(' ,  param.join(', ') , ')'].join('');
         }
         
         
@@ -87,27 +98,35 @@
             // transition to properties    
             trToProps = {};
             for(var prop in props){
+                
                 if(typeof(props[prop][2])==='undefined')
                     var ease = 'ease';
-                else var ease = props[prop][2];
-                transitionStr += prop + ' ' + props[prop][1] + 'ms ' + ease + ', ';
+                else var ease = props[prop][2];                
+                if(typeof(props[prop][1])==='undefined')
+                    var duration = '400';
+                else var duration = props[prop][1];
+                
+                (typeof(ease)==='object') && (ease = composeCubicBezier(ease))
+                
+
+                transitionStr += prop + ' ' + duration + 'ms ' + ease + ', ';
                 trToProps[prop] = props[prop][0];
                 i++;
                 //save state for back function
-                (typeof($(this).data('tansition_fn_data'))!=='object') && $(this).data('tansition_fn_data', {});
+                (typeof(this.data('tansition_fn_data'))!=='object') && this.data('tansition_fn_data', {});
 
-                $(this).data('tansition_fn_data')[prop] = $(this).css(prop);
+                this.data('tansition_fn_data')[prop] = this.css(prop);
 
             }
 
 
             //finally set transition property
-            $(this).css('transition', transitionStr.slice(0, - 2))
+            this.css('transition', transitionStr.slice(0, - 2))
             .css(trToProps).on('bsTransitionEnd', function(){
                 if(--i === 0){
                     //only calling transitionend for ONE property - the one with longest duration
                     if(callback)
-                    callback.call();
+                    callback.call(self,self);
                 }
             });            
         }
