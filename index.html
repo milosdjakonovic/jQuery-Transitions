@@ -194,20 +194,36 @@ $(function(){
 //    }).hover(function(){
 //        $(this).transition('pause');
 //    }); //-- fail
+
+
     
 //    withoud duration specified - default 400ms WORKS
-    $('#cube').transition({
-        transform:['translate3d(400px,0,0)', 9500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
-        height:['600px', 800, [0.165, 0.840, 0.440, 1.000]]
-    }, function(){
-        
-    }).hover(function(){
-        //$(this).transition('pause')
-    }) //-- ok
+//    $('#cube').transition({
+//        transform:['translate3d(400px,0,0)', 9500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
+//        height:['600px', 800, [0.165, 0.840, 0.440, 1.000]]
+//    }, function(s){
+//        $(s).transition('back');
+//    }).hover(function(){
+//        //$(this).transition('pause')
+//    }) //-- ok
     
     $('body').click(function(){
         $('#cube').transition('pause');
-    })
+    });
+
+
+
+    $('#cube').transition('sequence',[
+        {
+            transform:['translate3d(400px,0,0)', 9500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
+            height:['600px', 800, [0.165, 0.840, 0.440, 1.000]]
+        },
+        {
+            transform:['translate3d(0px,-250px,0)', 1500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
+            height:['50px', 800, [0.165, 0.840, 0.440, 1.000]],
+            backgroundColor:['#000000', 15000]
+        }
+    ]);
     
     
 });

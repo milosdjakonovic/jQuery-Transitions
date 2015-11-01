@@ -1,3 +1,3 @@
 #jQuery transitions
 
-Under heavy active development.
+Under heavy development.
