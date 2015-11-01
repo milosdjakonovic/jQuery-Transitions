@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>jQuery transitions</title>
 
-      
-      
+
+
 <style>
     html,body{
         width: 100%;
@@ -37,13 +37,13 @@
         -webkit-transform: rotate(5deg);
         -moz-transform: rotate(5deg);
         transform: rotate(5deg);
-        
+
         -webkit-perspective: 400px;
         perspective: 400px;
- 
+
     }
-    
-    
+
+
     .circle{
         width: 40px;
         height: 40px;
@@ -51,21 +51,21 @@
         background-color: aliceblue;
         margin: 10px 10px;
     }
-</style>      
+</style>
   </head>
   <body>
-    
-      
-      
-      
-      
-      
+
+
+
+
+
+
       <div id="cube">
           <p>Lorem</p>
           <p>Ipsum</p>
       </div>
-      
-      
+
+
       <div>
           <div class="circle"></div>
           <div class="circle"></div>
@@ -114,28 +114,28 @@
           <div class="circle"></div>
           <div class="circle"></div>
           <div class="circle"></div>
-          <div class="circle"></div>          
+          <div class="circle"></div>
       </div>
-      
-      
-      
-      
-      
 
-    
+
+
+
+
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="jquery.transitions.js"></script>  
-    
-      
+    <script src="../jquery.transitions.js"></script>
+
+
 <script>
 
 
-    
+
 $(function(){
-    
+
     /*============TESTS================*/
-    
-    
+
+
 //    $('#cube').transition({
 //        width:  [ '400px', 450, 'linear'],
 //        height: ['250px', 2000],
@@ -143,14 +143,14 @@ $(function(){
 //    }, function(tredProp){
 //        $('#cube').transition('back');
 //    }); //-- ok
-    
-    
+
+
 //    $('#cube').transition({
 //        width:  [ '400px', 450, 'linear']
 //    }, function(tredProp){
 //        console.log('ok')
 //    }); //-- ok
-    
+
 
 //    $('#cube').transition({
 //        width:  [ '400px', 450, 'linear'],
@@ -162,31 +162,31 @@ $(function(){
 //            height: ['200px',400],
 //            transform:['translate3d(-200px,200px,0) rotate(180deg) rotateY(40deg)', 500]
 //        })
-//    }); //-- ok 
-    
+//    }); //-- ok
+
 //    var $cube = $('#cube');
-//    
-//    
+//
+//
 //    function spinn(){
-//        
+//
 //        var val = $cube.data('rot') || 180;
 //
 //        $cube.transition({
 //            transform: ['translate3d(0,0,0) rotate(' + val + 'deg)', 500, 'linear'  ]
 //        }, function(){
-//            
+//
 //            $cube.data('rot', (val + 180));
 //            spinn();
 //        });
-//        
-//        
+//
+//
 //    }
 //
 //    spinn(); // -- ok
-    
 
-    
-    
+
+
+
 //    $('.circle').transition({
 //        transform:['translate3d(400px,0,0)', 2500]
 //    }, function(s){
@@ -196,38 +196,36 @@ $(function(){
 //    }); //-- fail
 
 
-    
-//    withoud duration specified - default 400ms WORKS
-//    $('#cube').transition({
-//        transform:['translate3d(400px,0,0)', 9500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
-//        height:['600px', 800, [0.165, 0.840, 0.440, 1.000]]
-//    }, function(s){
-//        $(s).transition('back');
-//    }).hover(function(){
-//        //$(this).transition('pause')
-//    }) //-- ok
-    
+
+
+    $('#cube').transition({
+        transform:['translate3d(400px,0,0)', 9500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
+        height:['600px', 800, [0.165, 0.840, 0.440, 1.000]]
+    }, function(s){
+        $(s).transition('back');
+    });
+
     $('body').click(function(){
         $('#cube').transition('pause');
     });
 
 
+//
+//    $('#cube').transition('sequence',[
+//        {
+//            transform:['translate3d(400px,0,0)', 9500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
+//            height:['600px', 800, [0.165, 0.840, 0.440, 1.000]]
+//        },
+//        {
+//            transform:['translate3d(0px,-250px,0)', 1500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
+//            height:['50px', 800, [0.165, 0.840, 0.440, 1.000]],
+//            backgroundColor:['#000000', 15000]
+//        }
+//    ]);
 
-    $('#cube').transition('sequence',[
-        {
-            transform:['translate3d(400px,0,0)', 9500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
-            height:['600px', 800, [0.165, 0.840, 0.440, 1.000]]
-        },
-        {
-            transform:['translate3d(0px,-250px,0)', 1500, [0.250, 0.250, 0.000, 1.650]/*'cubic-bezier(0.250, 0.250, 0.000, 1.650)'*/],
-            height:['50px', 800, [0.165, 0.840, 0.440, 1.000]],
-            backgroundColor:['#000000', 15000]
-        }
-    ]);
-    
-    
+
 });
-</script>      
-      
+</script>
+
   </body>
 </html>
