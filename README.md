@@ -6,12 +6,13 @@ The aim of this project was to build reliable `CSS transitions` based animation 
 With this library one can animate CSS properties that are subject to CSS transitions, animate back (reverse), pause and to forcibly finish the animation.
 This library lacks animation 'resume' and 'sequence' methods, which was planned to be developed.
 
-Why cancelling the project?
+#### Why cancelling the project?
 It is relatively easy to animate things with CSS transitions using jQuery: 
 
 ```javascript
 $('#target')
   .css('transition', 'height 0.3s ease-out, opacity 0.3s ease 0.5s')
+  .addClass('animatedSomething')
   .one('transitionend webkitTransitionEnd oTransitionEnd', callback)
 ```
 
